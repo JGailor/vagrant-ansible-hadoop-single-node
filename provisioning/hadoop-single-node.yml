@@ -1,9 +1,31 @@
 ---
 - hosts: all
   tasks:
+    - name: Add the Java 8 repository
+      sudo: yes
+      apt_repository: repo="deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" update_cache=yes state=present
+
+    - name: Add the Java 8 source repository
+      sudo: yes
+      apt_repository: repo="deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" update_cache=yes state=present
+
+    - name: Add the key
+      sudo: yes
+      apt_key: keyserver="keyserver.ubuntu.com" id="EEA14886" state=present
+
+    - name: Add webupd8team repository
+      sudo: yes
+      apt_repository: repo="ppa:webupd8team/java" update_cache=yes state=present
+
+    - name: Deal with Oracle Java 8 Licensing Bullshit
+      sudo: yes
+      shell: "echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections"
+
     - name: Ensure packages setup and ready
       sudo: yes
       apt:  name={{item}} state=present update_cache=yes
       with_items:
         - ssh
         - rsync
+        - oracle-java8-installer
+        - oracle-java8-set-default
