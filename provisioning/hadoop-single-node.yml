@@ -30,6 +30,10 @@
         - oracle-java8-installer
         - oracle-java8-set-default
 
+    - name: Generate the hadoop profile.d system variables
+      sudo: yes
+      template: src="templates/etc/profile.d/hadoop.sh.j2" dest="/etc/profile.d/hadoop.sh"
+
     - name: Get Hadoop 2.7.1 release from remote servers
       get_url: url="http://www.us.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz" dest="/tmp/hadoop-2.7.1.tar.gz"
 
