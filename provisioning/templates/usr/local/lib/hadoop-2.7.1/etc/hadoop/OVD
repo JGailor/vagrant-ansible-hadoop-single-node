@@ -1,0 +1,60 @@
+OVD
+- (Complete): Netflix added a namespace to their feed without notifying anyone.  Needed to be fixed.
+- (Complete): Telecine BR changed their site, crawler needed to be updated to reflect changes, and added automated checks to notify us of future changes.
+- (Complete): Improved the ARD crawler to better filter our Radio content
+
+- (In-Acceptance): Support for Amazon Instant Video Android
+
+- (In-Progress): DB02 has started having disk controller issues.  Yousef is working on a plan to migrate 200 Paul entirely to AWS
+- (In-Progress): Onto adult mapping changes to support Brazilian adult providers.
+- (In-Progress): Added proxy config and set chrome proxy so editors can change region (and thus change catalog) in the Chrome Netflix plugin and flushing out more expiration workflows.
+- (In-Progress): Improving match rates for DTAG
+- (In-Progress): Series linking for DTAG feeds
+
+Relay
+- (Complete):  C-SPAN Xml Changes – Verified that the change on the client’s end does not affect ingestion
+- (Complete): Allow Content to Ignore Adult Programs - Deployed on Live
+
+- (In-Acceptance): Change made to a channel within thisisglobal project
+- (In-Acceptance): WideOrbit Scheme - New Channels RFDTV / FAMNET
+
+- (In-Progress): Comcast load and custom automap run
+- (In-Progress): Paid Programming Titles – Extracting serialized messages to send to the NEd team for finding the root cause of the error
+
+- (Blocked): Add new qualifiers in epgs, blocked on additional information
+- (Blocked): Ubiquity catalog ingest setup, blocked on final feed format from source
+- (Blocked): BlackArrow TV – Waiting on Content and Trent to decide priority and estimates to give to client. Have asked if anything else needs to be done from our side
+- (Blocked): Relay Earliest Date logic rework
+- (Blocked): Special getter to process past dates via EPGS for epgs-en-ca-treehouse
+- (Blocked): NanoTech/UltraFlix Gap Ananlysis
+
+REL-161 [Acceptance]  VMSTBVOD-Live Testing – Loaded files on to DEV7 environment for verification by content
+REL-292 [Done]     VMSVOD Rename – Renamed the original mapping scheme to add the –DEV suffix
+REL-412  [WIP]     Rename VOD Schemes – Renamed unused VOD schemes with “zz” prefix for content to understand these are not in use
+REL-405  [WIP]     Starz – Changes to provider code to separate short form assets to another mapping scheme
+REL-199  [Ready for Development]     Moved ticket back to Ready for Development as during Research realized a bug of Notification Client not updated with new mail host server. Fix is known and will be deployed next week.
+INTERNAL
+REL-320 [WIP] - relay-jobs initial concept done, started rspecs, working on db fixtures
+REL-336[Done] - Monit for ruby automapper
+REL-400  [Acceptance]    RelayETL WAR Deployment – Released the new mavenized WAR to Dev and Live environments with Vlad – Monitoring deployment now.
+REL-406  [WIP]     relay-getters – merged with master, and set a demo date (and deadline) for next Friday for showcasing enhancements
+REL-324  [Done]     RelayImportProviders – Moved to Done column as changes have been merged to Integration and will be released to Live after Testing
+REL-323  [Done]     relay-getters – Moved to Done column as changes have been merged to master
+NDL GenerateAndMailReport method optimization - Modified NDL code to update  statuses of schedule timeslots in batches.
+Profiling NDL.
+MOVIE IMPORTS
+MVIPM-131 [Done] - Sundance Import (sd) PM Amenity
+MVIMP-132 [Done] - Sundance Import (sd)
+MVIMP-133 [Done] - Change to Veezi Import
+MVIMP-137 [WIP] - Agile import (ag)
+SALESFORCE TICKETS
+None
+
+Others
+There were no backlog issues this week as such however there were issues with RelayETL and NDL deployment. RelayETL config file issue was corrected today and NDL will be re-deployed on Monday.
+Schedule Backlog : We fixed the NDL code to save the data asynchronously. Release will go live on Monday. We also did some profiling on NDL code but need to further dig in.
+Few graphs, showing NED call performance only, have been added to NDL dashboard on datadog - https://app.datadoghq.com/dash/58286/ndl-performance?live=true&page=0&is_auto=false&from_ts=1443221680872&to_ts=1443225280872&tile_size=m&fullscreen=false
+RelayETL mavenized ‘release’ branch has been deployed live yesterday. We are going to merge & deploy release branch into master for RelayProviders and RelayETL next week.
+
+
+

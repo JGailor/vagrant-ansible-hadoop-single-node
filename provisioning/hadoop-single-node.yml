@@ -29,3 +29,17 @@
         - rsync
         - oracle-java8-installer
         - oracle-java8-set-default
+
+    - name: Get Hadoop 2.7.1 release from remote servers
+      get_url: url="http://www.us.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz" dest="/tmp/hadoop-2.7.1.tar.gz"
+
+    - name: Untar the Hadoop release
+      sudo: yes
+      unarchive: src="/tmp/hadoop-2.7.1.tar.gz" dest="/usr/local/lib/" copy=no
+
+    - name: Copy hadoop core-site xml file
+      sudo: yes
+      template: src="templates/usr/local/lib/hadoop-2.7.1/etc/hadoop/{{item}}.j2"  dest="/usr/local/lib/hadoop-2.7.1/etc/hadoop/{{item}}" mode="0644"
+      with_items:
+        - core-site.xml
+        - hdfs-site.xml
