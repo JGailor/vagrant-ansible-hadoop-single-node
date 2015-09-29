@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - name: Ensure packages setup and ready
+      sudo: yes
+      apt:  name={{item}} state=present update_cache=yes
+      with_items:
+        - ssh
+        - rsync
