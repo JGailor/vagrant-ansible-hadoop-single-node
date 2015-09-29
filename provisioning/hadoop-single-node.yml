@@ -1,5 +1,8 @@
 ---
 - hosts: all
+  vars:
+    hadoop_version: hadoop-2.7.1
+    hadoop_install_dir: /usr/local/lib/{{hadoop_version}}
   tasks:
     - name: Add the Java 8 repository
       sudo: yes
@@ -35,15 +38,15 @@
       template: src="templates/etc/profile.d/hadoop.sh.j2" dest="/etc/profile.d/hadoop.sh"
 
     - name: Get Hadoop 2.7.1 release from remote servers
-      get_url: url="http://www.us.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz" dest="/tmp/hadoop-2.7.1.tar.gz"
+      get_url: url="http://www.us.apache.org/dist/hadoop/common/{{hadoop_version}}/{{hadoop_version}}.tar.gz" dest="/tmp/{{hadoop_version}}.tar.gz"
 
     - name: Untar the Hadoop release
       sudo: yes
-      unarchive: src="/tmp/hadoop-2.7.1.tar.gz" dest="/usr/local/lib/" copy=no
+      unarchive: src="/tmp/{{hadoop_version}}.tar.gz" dest="/usr/local/lib/" copy=no
 
     - name: Copy hadoop core-site xml file
       sudo: yes
-      template: src="templates/usr/local/lib/hadoop-2.7.1/etc/hadoop/{{item}}.j2"  dest="/usr/local/lib/hadoop-2.7.1/etc/hadoop/{{item}}" mode="0644"
+      template: src="templates{{hadoop_install_dir}}/etc/hadoop/{{item}}.j2"  dest="{{hadoop_install_dir}}/etc/hadoop/{{item}}" mode="0644"
       with_items:
         - core-site.xml
         - hdfs-site.xml
@@ -58,3 +61,17 @@
 
     - name: Add the rsa key for the user to the authorized keys file
       authorized_key: user={{ansible_env.USER}} key="{{ssh_key_contents.stdout}}" state=present
+
+    - name: Create the hadoop log directory
+      sudo: yes
+      file: path="{{hadoop_install_dir}}/logs" state=directory mode=0666
+
+    - name: Get the JAVA_HOME for the system
+      shell: source /etc/profile.d/jdk.sh && echo $JAVA_HOME
+      args:
+        executable: /bin/bash
+      register: java_home
+
+    - name: This line in the hadoop conf does not seem to work due to the environment. Temp fix.
+      sudo: yes
+      lineinfile: dest="{{hadoop_install_dir}}/etc/hadoop/hadoop-env.sh" line="export JAVA_HOME={{java_home.stdout}}" regexp="export JAVA_HOME=\${JAVA_HOME}"
